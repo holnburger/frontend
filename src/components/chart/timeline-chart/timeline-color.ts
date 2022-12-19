@@ -5,7 +5,7 @@ import { labBrighten } from "../../../common/color/lab";
 import { computeDomain } from "../../../common/entity/compute_domain";
 import { stateActive } from "../../../common/entity/state_active";
 import { stateColor } from "../../../common/entity/state_color";
-import { UNAVAILABLE } from "../../../data/entity";
+import { UNAVAILABLE, UNKNOWN } from "../../../data/entity";
 
 const DOMAIN_STATE_SHADES: Record<string, Record<string, number>> = {
   media_player: {
@@ -51,7 +51,16 @@ function computeTimelineStateColor(
   stateObj?: HassEntity
 ): string | undefined {
   if (!stateObj || state === UNAVAILABLE) {
-    return "transparent";
+    return (
+      computedStyles.getPropertyValue("--history-unavailable-color") ||
+      undefined
+    );
+  }
+
+  if (state === UNKNOWN) {
+    return (
+      computedStyles.getPropertyValue("--history-unknown-color") || undefined
+    );
   }
 
   const color = stateColor(stateObj, state);

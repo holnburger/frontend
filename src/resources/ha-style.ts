@@ -186,6 +186,10 @@ documentContainer.innerHTML = `<custom-style>
       --rgb-state-update-installing-color: var(--rgb-orange-color);
       --rgb-state-vacuum-color: var(--rgb-teal-color);
 
+      /* history */
+      --history-unknown-color: #607D8B;
+      --history-unavailable-color: transparent;
+      
       /* input components */
       --input-idle-line-color: rgba(0, 0, 0, 0.42);
       --input-hover-line-color: rgba(0, 0, 0, 0.87);

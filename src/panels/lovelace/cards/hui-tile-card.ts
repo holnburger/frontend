@@ -3,6 +3,7 @@ import { mdiExclamationThick, mdiHelp } from "@mdi/js";
 import { HassEntity } from "home-assistant-js-websocket";
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators";
+import { classMap } from "lit/directives/class-map";
 import { styleMap } from "lit/directives/style-map";
 import { computeCssColor } from "../../../common/color/compute-color";
 import { hsv2rgb, rgb2hex, rgb2hsv } from "../../../common/color/convert-color";
@@ -139,7 +140,7 @@ export class HuiTileCard extends LitElement implements LovelaceCard {
       computeDomain(entity.entity_id) === "person" ||
       computeDomain(entity.entity_id) === "device_tracker"
     ) {
-      return "var(--state-default-color)";
+      return undefined;
     }
 
     // Use light color if the light support rgb
@@ -162,7 +163,7 @@ export class HuiTileCard extends LitElement implements LovelaceCard {
     }
 
     // Fallback to state color
-    return stateColorCss(entity) ?? "var(--state-default-color)";
+    return stateColorCss(entity);
   });
 
   private _computeStateDisplay(stateObj: HassEntity): TemplateResult | string {
@@ -255,6 +256,7 @@ export class HuiTileCard extends LitElement implements LovelaceCard {
 
     const stateDisplay = this._computeStateDisplay(stateObj);
 
+    const active = stateActive(stateObj);
     const color = this._computeStateColor(stateObj, this._config.color);
 
     const style = {
@@ -271,7 +273,7 @@ export class HuiTileCard extends LitElement implements LovelaceCard {
     );
 
     return html`
-      <ha-card style=${styleMap(style)}>
+      <ha-card style=${styleMap(style)} class=${classMap({ active })}>
         <div class="tile">
           <div
             class="icon-container"
@@ -369,8 +371,8 @@ export class HuiTileCard extends LitElement implements LovelaceCard {
       ha-card {
         height: 100%;
       }
-      ha-card.disabled {
-        --tile-color: var(--disabled-color);
+      ha-card.active {
+        --tile-color: var(--state-icon-color);
       }
       [role="button"] {
         cursor: pointer;

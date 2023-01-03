@@ -330,7 +330,6 @@ export class HaTargetPicker extends SubscribeMixin(LitElement) {
     return html`<mwc-menu-surface
       open
       .anchor=${this._addContainer}
-      .fullwidth=${this.narrow}
       .corner=${"BOTTOM_START"}
       @closed=${this._onClosed}
       @opened=${this._onOpened}
